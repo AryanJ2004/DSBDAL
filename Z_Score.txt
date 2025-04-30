@@ -1,0 +1,25 @@
+import pandas as pd
+import numpy as np
+from scipy.stats import zscore
+from sklearn.datasets import load_iris
+
+# Step 1: Load the demo dataset
+data = {
+    'A': [10, 12, 14, 16, 18, 100],  # 100 is an outlier
+    'B': [20, 22, 24, 26, 28, 30]
+}
+print(data)
+df = pd.DataFrame(data)
+
+# Step 2: Detect outliers using Z-score
+z_scores = df.apply(zscore)
+print(z_scores)
+outliers = np.abs(z_scores) > 2
+
+# Step 3: Replace outliers with the median value
+for column in df.columns:
+    median_val = df[column].median()
+    df.loc[outliers[column], column] = median_val
+
+# Verify the result
+print("Data after replacing outliers:\n", df.head(n=20))

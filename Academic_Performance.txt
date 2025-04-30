@@ -1,0 +1,66 @@
+#ACADEMAIC PERFORMANCE
+
+import pandas as pd
+import numpy as np
+
+# Step 1: Create a custom dataset for Academic Performance with some missing values
+data = {
+    'Math Score': [75, 80, 65, np.nan, 78, 82, np.nan, 90, 85, 88],
+    'Reading Score': [85, 90, 78, 92, 88, np.nan, 75, 89, np.nan, 91],
+    'Writing Score': [80, np.nan, 70, 85, 88, 90, 72, 92, 79, np.nan],
+    'Place': ['Nashik', 'Pune', 'Mumbai', np.nan, 'Nashik', 'Mumbai', 'Pune', np.nan, 'Mumbai', 'Pune']
+}
+
+# Create a DataFrame
+df = pd.read_csv("C:/Users/aryan/Downloads/AcademicPerformance.csv")
+df['math score'] = pd.to_numeric(df['math score'], errors='coerce')
+
+# Step 2: Check for null values in the dataset
+print("Null values in dataset before replacement:")
+print(df.isnull().sum())
+
+# Step 3: Replace specific missing values with NaN (assuming '?' as a placeholder)
+df.replace(['?', 'NA', 'na', '--', 'null', 'Null', 'NAN','Na'], np.nan, inplace=True)
+
+# Step 4: Replace missing value of 'Math Score' with the mean value
+math_score_mean = df['math score'].astype(float).mean()
+df['math score'].fillna(math_score_mean, inplace=True)
+
+# df['reading score'] = pd.to_numeric(df['reading score'], errors='coerce')
+# Step 5: Replace missing value of 'Reading Score' with the standard deviation value
+reading_score_std = df['reading score'].astype(float).std()
+df['reading score'].fillna(reading_score_std, inplace=True)
+
+# Step 6: Replace missing value in 'Place' with the common value "Nashik"
+df['Region'].fillna('Nashik', inplace=True)
+
+# Step 7: Verify the replacements
+df.head()
+
+#ANOTHER PRACTICAL
+
+# Step 2: Check null values
+print("Null values in dataset:\n", df.isnull())
+
+# Step 3: Count total number of nulls in dataset
+print("\nTotal null values in dataset:", df.isnull().sum().sum())
+
+# Step 4: Drop rows with at least one null value
+df_drop_any_null = df.dropna()
+print("\nDataFrame after dropping rows with at least 1 null value:\n", df_drop_any_null)
+
+# Step 5: Drop rows where all values are null
+# df_all_null = df.append(pd.Series([np.nan]*4, index=df.columns), ignore_index=True)
+
+
+#Replace Line if not working
+null_row = pd.DataFrame([[np.nan]*len(df.columns)], columns=df.columns)
+df_all_null = pd.concat([df, null_row], ignore_index=True)
+
+
+df_drop_all_null = df_all_null.dropna(how='all')
+print("\nDataFrame after dropping rows where all values are null:\n", df_drop_all_null)
+
+# Step 6: Drop columns with at least one null value
+df_drop_col = df.dropna(axis=1)
+print("\nDataFrame after dropping columns with at least 1 null value:\n", df_drop_col)

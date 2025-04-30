@@ -1,0 +1,83 @@
+import pandas as pd
+import numpy as np
+
+# Sample dataset
+data = {
+    'name': ['Alice', 'Bob', 'Charlie', 'David', 'Eva', 'Frank', 'Grace'],
+    'gender': ['F', 'M', np.nan, 'M', 'F', np.nan, 'F'],
+    'score': [85, 90, 78, np.nan, 92, 88, np.nan]
+}
+
+df = pd.DataFrame(data)
+#df = pd.read_csv(csv_url, names=cols)
+# 1. Check if there are any missing values in the entire DataFrame
+print("Any missing values in whole DataFrame:", df.isnull().values.any())
+
+# 2. Is there any missing value across each column (True/False)
+print("\nMissing values per column (True/False):")
+print(df.isnull().any())
+
+# 3. Count of missing values across each column
+print("\nCount of missing values per column:")
+print(df.isnull().sum())
+
+# 4. Count of missing values row-wise
+print("\nRow-wise missing values:")
+print(df.isnull().sum(axis=1))
+
+# 5. Count of missing values in gender column
+print("\nMissing values in 'gender' column:", df['gender'].isnull().sum())
+
+# 6. Groupby count of missing in score column by gender
+print("\nMissing values in 'score' grouped by 'gender':")
+print(df.groupby('gender')['score'].apply(lambda x: x.isnull().sum()))
+# df['math score'] = pd.to_numeric(df['math score'], errors='coerce')
+# 7. Replace missing values in 'score' with average of the column
+mean_score = df['score'].mean()
+df['score'].fillna(mean_score, inplace=True)
+
+# Final DataFrame after replacing
+print("\nFinal DataFrame after replacing missing 'score' values:")
+print(df)
+
+
+#ANOTHER PRACTICAL
+
+
+import pandas as pd
+import numpy as np
+
+# Number of rows
+n = 50  # You can adjust this
+
+# Set random seed for reproducibility
+np.random.seed(42)
+
+# Generate data within specified ranges
+data = {
+    'Math_Score': np.random.randint(60, 81, n),
+    'Reading_Score': np.random.randint(75, 96, n),
+    'Writing_Score': np.random.randint(60, 81, n),
+    'Placement_Score': np.random.randint(75, 101, n),
+    'Club_Join_Date': np.random.randint(2018, 2022, n)
+}
+
+# Create DataFrame
+df = pd.DataFrame(data)
+
+# Introduce 20% missing values randomly
+total_values = df.size
+num_missing = int(total_values * 0.2)
+
+for _ in range(num_missing):
+    i = np.random.randint(0, n)
+    j = np.random.randint(0, df.shape[1])
+    df.iat[i, j] = np.nan
+
+# Show the dataset with missing values
+print(df.head(10))
+
+#PROPER WAY
+
+Excel Formula: =RANDBETWEEN(60,80)
+=IF(D2<75,1,IF(D2<85,2,3))

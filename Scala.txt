@@ -1,0 +1,70 @@
+object CombinedProgram {
+
+  // Function to check if the number is Zero, Positive, or Negative
+  def checkNumber(num: Int): Unit = {
+    if (num > 0) {
+      println("The number is Positive.")
+    } else if (num < 0) {
+      println("The number is Negative.")
+    } else {
+      println("The number is Zero.")
+    }
+  }
+
+  // Function to print the name
+  def printName(): Unit = {
+    println("\nYour Name: Aryan Jain")
+  }
+
+  def main(args: Array[String]): Unit = {
+    // Part 1: Check if a number is Zero, Positive, or Negative
+    println("Enter a number to check if it is Zero, Positive, or Negative:")
+    val num = scala.io.StdIn.readInt()
+    
+    checkNumber(num)  // Calling the function to check the number
+
+    // Part 2: Print your name
+    printName()  // Calling the function to print the name
+  }
+}
+
+
+//ANOTHER PROGRAM
+object CombinedProgram {
+
+  // Function to check if the number is Zero, Positive, or Negative
+  def checkNumber(num1: Int,num2:Int): Unit = {
+    if(num1>num2){
+      println("Number 1 is Greater")
+    }else if(num2>num1){
+       println("Number 2 is Greater")
+    }else{
+      println("Both Numbers Are Equal")
+    }
+  }
+
+  // Function to print the name
+  def printName(): Unit = {
+    println("\nYour Name: Aryan Jain")
+  }
+
+  def main(args: Array[String]): Unit = {
+    // Part 1: Check if a number is Zero, Positive, or Negative
+    println("Enter a number to check if it is Zero, Positive, or Negative:")
+    val num1 = scala.io.StdIn.readInt()
+    val num2= scala.io.StdIn.readInt()
+    
+    checkNumber(num1,num2)  // Calling the function to check the number
+
+    // Part 2: Print your name
+    printName()  // Calling the function to print the name
+  }
+}
+
+
+//Run Command
+sudo apt install scala
+nano filename.scala
+scalac CombinedProgram.scala
+scala CombinedProgram
+

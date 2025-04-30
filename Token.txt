@@ -1,0 +1,52 @@
+import nltk
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from nltk import pos_tag
+from nltk.stem import PorterStemmer, WordNetLemmatizer
+from sklearn.feature_extraction.text import TfidfVectorizer
+
+# Download required resources (run once)
+nltk.download('punkt')
+nltk.download('averaged_perceptron_tagger')
+nltk.download('stopwords')
+nltk.download('wordnet')
+nltk.download('punkt_tab')
+nltk.download('averaged_perceptron_tagger_eng')
+# Step 1: Sample document
+# doc = "Natural Language Processing helps computers understand human language. It includes tasks such as tokenization, stemming, and lemmatization."
+with open("IQR.txt", "r", encoding="utf-8") as file:
+    doc = file.read()
+# Tokenization
+tokens = word_tokenize(doc)
+
+# POS Tagging
+pos_tags = pos_tag(tokens)
+
+# Stop words removal
+stop_words = set(stopwords.words('english'))
+filtered_tokens = [w for w in tokens if w.lower() not in stop_words]
+
+# Stemming
+stemmer = PorterStemmer()
+stemmed_tokens = [stemmer.stem(w) for w in filtered_tokens]
+
+# Lemmatization
+lemmatizer = WordNetLemmatizer()
+lemmatized_tokens = [lemmatizer.lemmatize(w) for w in filtered_tokens]
+
+# Output
+print("Original Tokens:\n", tokens)
+print("\nPOS Tags:\n", pos_tags)
+print("\nFiltered Tokens (Stop words removed):\n", filtered_tokens)
+print("\nStemmed Tokens:\n", stemmed_tokens)
+print("\nLemmatized Tokens:\n", lemmatized_tokens)
+
+# Step 2: TF-IDF Representation
+documents = [doc]  # List of documents
+vectorizer = TfidfVectorizer()
+tfidf_matrix = vectorizer.fit_transform(documents)
+
+# Display TF-IDF values
+print("\nTF-IDF Representation:")
+df_tfidf = pd.DataFrame(tfidf_matrix.toarray(), columns=vectorizer.get_feature_names_out())
+print(df_tfidf)

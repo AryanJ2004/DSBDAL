@@ -1,0 +1,48 @@
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Step 1: Load Titanic dataset
+df = sns.load_dataset('titanic')
+
+# Step 2: Explore dataset visually for patterns (optional examples)
+sns.countplot(x='sex', hue='survived', data=df)
+plt.title("Survival count by Gender")
+plt.show()
+
+sns.pairplot(df)
+
+sns.boxplot(x='pclass', y='age', data=df)
+plt.title("Age distribution by Passenger Class")
+plt.show()
+
+# Step 3: Plot histogram for 'fare' distribution
+sns.histplot(df['fare'], kde=True)
+plt.title("Fare Distribution")
+plt.xlabel("Fare")
+plt.ylabel("Count")
+plt.show()
+
+#ANOTHER PRATICLE
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the Titanic dataset
+df = sns.load_dataset('titanic')
+
+# Plot a boxplot for age distribution with respect to gender and survival status
+sns.boxplot(x='sex', y='age', hue='survived', data=df)
+plt.title("Age Distribution by Gender and Survival")
+plt.xlabel("Gender")
+plt.ylabel("Age")
+plt.legend(title='Survived', labels=['No', 'Yes'])
+plt.show()
+
+#Observation
+#Females who survived tend to have a broader age range, especially between 20 to 40 years.
+
+#Males who did not survive show a wide spread in age, with many young and older passengers not surviving.
+
+#Median age for survivors is generally lower than for non-survivors in both genders.
+
+#The plot visually supports the historical claim that "women and children first" was followed during rescue efforts.

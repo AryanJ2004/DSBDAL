@@ -1,0 +1,46 @@
+#MALL CUSTOMER
+
+import pandas as pd
+import numpy as np
+
+# Step 1: Create sample MallCustomer dataset
+data = {
+    'CustomerID': [1, 2, 3, 4, 5],
+    'Age': [19, 35, 26, 27, 19],
+    'AgeGroup': ['18-25', '31-40', '26-30', '26-30', '18-25'],
+    'Income': [15, 40, 35, 45, 20],
+    'SpendingScore': [39, 81, 6, 77, 40]
+}
+#df = pd.DataFrame(data)
+df = pd.read_csv("C:/Users/aryan/Downloads/Mall_Customers.csv")
+
+# Step 2: Summary statistics
+print("\nSummary Statistics:")
+print(df.describe())
+
+print("\nMedian:")
+print(df.median(numeric_only=True))
+
+# Step 3: Measures of Dispersion
+mad = np.mean(np.abs(df - df.mean(numeric_only=True)))
+print("Mean Absolute Deviation:\n", mad)
+
+print("\nVariance:")
+print(df.var(numeric_only=True))
+
+print("\nStandard Deviation:")
+print(df.std(numeric_only=True))
+
+print("\nRange (Max - Min):")
+print(df.max(numeric_only=True) - df.min(numeric_only=True))
+
+print("\nQuartiles:")
+l1=['CustomerID','Age','Income','SpendingScore']
+print(df.quantile([0.25, 0.5, 0.75],numeric_only=True))
+
+print("\nSkewness:")
+print(df.skew(numeric_only=True))
+
+# Step 4: Grouped Summary Statistics
+print("\nIncome Summary by Age Group:")
+print(df.groupby('Age')['Annual Income (k$)'].agg(['min', 'max']))

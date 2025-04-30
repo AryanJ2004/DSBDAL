@@ -1,0 +1,35 @@
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+import seaborn as sns
+# Load iris dataset
+df = pd.read_csv("C:/Users/aryan/Downloads/Iris.csv")
+print(df.head())
+# Features and target
+X = df.iloc[:, :-1]  # all columns except last
+y = df.iloc[:, -1]   # last column (target)
+
+# Train/test split
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=0)
+
+# Naive Bayes model
+model = GaussianNB()
+model.fit(X_train, y_train)
+
+# Predict
+y_pred = model.predict(X_test)
+# Confusion matrix
+cm = confusion_matrix(y_test, y_pred, labels=y.unique())
+print("Confusion Matrix:\n", cm)
+sns.heatmap(cm,annot=True,xticklabels=["A","B","C"],yticklabels=["A","B","C"])
+# Metrics (macro average to handle multiclass)
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred, average='macro')
+recall = recall_score(y_test, y_pred, average='macro')
+
+print(f"Accuracy: {accuracy:.2f}")
+print(f"Error Rate: {error_rate:.2f}")
+print(f"Precision: {precision:.2f}")
+print(f"Recall: {recall:.2f}")

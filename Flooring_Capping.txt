@@ -1,0 +1,47 @@
+#Flooring&Capping
+
+import pandas as pd
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Step 1: Load a demo dataset into a DataFrame
+# For this example, we will use a randomly generated dataset.
+# You can replace this with any dataset.
+
+# Example Dataset
+# df = pd.DataFrame({
+#     'Math_Score': [80, 75, 90, 85, 60, 50, 95, 100, 105, 110],
+#     'Reading_Score': [60, 80, 85, 78, 70, 72, 95, 98, 65, 100],
+#     'Writing_Score': [70, 75, 95, 85, 60, 50, 95, 99, 100, 105]
+# })
+
+df=pd.read_csv("C:/Users/aryan/Downloads/demo.csv")
+#df=df.drop(columns="club join year")
+# Step 2: Detect outliers using BoxPlot
+# Create a box plot to visualize the outliers
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df)
+plt.title("Box Plot for Outlier Detection")
+plt.show()
+
+# Step 3: Handle outliers using Quantile-based flooring and capping
+# Calculate 10th percentile and 90th percentile for each column
+lower_percentile = df.quantile(0.1)
+upper_percentile = df.quantile(0.9)
+
+# Apply flooring (below 10th percentile) and capping (above 90th percentile)
+df_floored_capped = df.copy()
+for column in df.columns:
+    df_floored_capped[column] = np.where(df[column] < lower_percentile[column], lower_percentile[column],
+                                         np.where(df[column] > upper_percentile[column], upper_percentile[column], df[column]))
+
+# Step 4: Display the data after handling the outliers using box plot
+plt.figure(figsize=(10, 6))
+sns.boxplot(data=df_floored_capped)
+plt.title("Box Plot After Outlier Handling (Flooring and Capping)")
+plt.show()
+
+# Print the modified DataFrame after flooring and capping
+print("\nData after outlier handling (flooring and capping):")
+print(df_floored_capped)

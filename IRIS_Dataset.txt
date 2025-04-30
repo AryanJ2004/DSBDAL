@@ -1,0 +1,73 @@
+#Iris dataset
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+import matplotlib.pyplot as plt
+import seaborn as sns
+# 1. Load the dataset
+# csv_url = 'https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data'
+# cols = ['sepal.length', 'sepal.width', 'petal.length', 'petal.width', 'Species']
+df = pd.read_csv("C:/Users/aryan/Downloads/Iris_1.csv")
+
+# 2.a) Display total number of rows and columns
+print("Rows and Columns:", df.shape)
+
+# 2.b) Display type of each column
+print("Column Types:\n", df.dtypes)
+
+# 2.c) Sort by sepal.length in descending order
+sorted_df = df.sort_values(by='SepalLengthCm', ascending=False)
+print("Sorted Data:\n", sorted_df.head())
+
+# 2.d) Slice rows 11 to 20 and select only sepal.length and Species, then rename
+sliced_df = df.loc[10:19, ['SepalLengthCm', 'Species']]
+sliced_df.rename(columns={'Species': 'Type'}, inplace=True)
+print("Sliced and Renamed Data:\n", sliced_df)
+
+#ANOTHER PRACTICAL
+
+# Perform One Hot Encoding on 'Species' column
+encoded_df = pd.get_dummies(df, columns=['Species'])
+
+# Display the result
+print(encoded_df.head())
+
+#ANOTHER PRACTICAL
+
+# Perform Label Encoding on 'Species' column
+le = LabelEncoder()
+df['Species'] = le.fit_transform(df['Species'])
+
+# Display the result
+print(df.head())
+
+#ANOTHER PRACTICAL
+# Perform Dummy Variable Encoding (drop_first=True to avoid dummy variable trap)
+df_encoded = pd.get_dummies(df, columns=['Species'], drop_first=True)
+
+# Display the result
+print(df_encoded.head())
+
+
+#ANOTHER PRACTICAL
+
+# 1. List features and their types
+print(df.dtypes)
+
+# 2. Histogram for each feature
+df.hist(figsize=(10, 6))
+plt.tight_layout()
+plt.show()
+
+# 3. Box plot for each feature
+for col in df.columns[:-1]:
+    sns.boxplot(y=df[col])
+    plt.title(col)
+    plt.show()
+
+# 4. Identify outliers using IQR
+for col in df.columns[:-1]:
+    Q1 = df[col].quantile(0.25)
+    Q3 = df[col].quantile(0.75)
+    IQR = Q3 - Q1
+    outliers = df[(df[col] < (Q1 - 1.5 * IQR)) | (df[col] > (Q3 + 1.5 * IQR))]
+    print(f"{col} outliers count:", len(outliers))
